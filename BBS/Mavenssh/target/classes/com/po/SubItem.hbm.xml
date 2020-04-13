@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.po.SubItem" table="subitem">
+		<id name="subItemID">
+			<generator class="identity"></generator>
+		</id>
+		<property name="subItemName"></property>
+		<property name="itemDescription"></property>
+		<property name="itemID"></property>
+		<many-to-one name="manager"
+                     class="com.po.User" cascade="none" outer-join="true" lazy="false" not-found="ignore"/>
+		<set name="topics" cascade="all" lazy="false">
+			<key column="subItemID"></key>				<!-- 配置外键 -->
+			<one-to-many class="com.po.Topic"/><!-- 配置关联类 -->
+		</set>
+	</class>	
+</hibernate-mapping>
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+		"-//Apache Struts//XWork Validator 1.0.3//EN"
+		"http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+
+<validators>
+	<field name="username">								<!--指定校验username属性 -->
+		<field-validator type="requiredstring">			<!-- 使用必填字符串校验器 -->
+			<param name="trim">true</param>				<!-- 截断两段空白-->
+			<message>用户名必须输入</message>				<!-- 校验错误信息 -->
+		</field-validator>
+		<field-validator type="stringlength">			<!-- 使用字符串长度校验器 -->
+			<param name="minLength">6</param>			<!-- 最小长度-->
+			<param name="maxLength">15</param>			<!-- 最大长度-->
+			<message>用户名长度必须在${minLength}到${maxLength}之间</message>
+		</field-validator>
+	</field>
+
+	<field name="password">								<!--指定校验password属性 -->
+		<field-validator type="requiredstring">			<!-- 使用必填字符串校验器 -->
+			<param name="trim">true</param>				<!-- 截断两段空白-->
+			<message>密码必须输入</message>				<!-- 校验错误信息 -->
+		</field-validator>
+		<field-validator type="stringlength">			<!-- 使用字符串长度校验器 -->
+			<param name="minLength">6</param>			<!-- 最小长度-->
+			<param name="maxLength">15</param>			<!-- 最大长度-->
+			<message>密码长度必须在${minLength}到${maxLength}之间</message>
+		</field-validator>
+	</field>
+
+	<field name="repassword">							<!--指定校验repassword属性 -->
+		<field-validator type="requiredstring">			<!-- 使用必填字符串校验器 -->
+			<param name="trim">true</param>				<!-- 截断两段空白-->
+			<message>重复密码必须输入</message>				<!-- 校验错误信息 -->
+		</field-validator>
+		<field-validator type="stringlength">			<!-- 使用字符串长度校验器 -->
+			<param name="minLength">6</param>			<!-- 最小长度-->
+			<param name="maxLength">15</param>			<!-- 最大长度-->
+			<message>重复密码长度必须在${minLength}到${maxLength}之间</message>
+		</field-validator>
+		<field-validator type="fieldexpression">
+			<param name="expression"><![CDATA[(password==repassword)]]></param><!--指定逻辑表达式 -->
+			<message>确认密码和密码必须一致</message><!--指定校验失败提示信息-->
+		</field-validator>
+	</field>
+
+	<field name="age">								<!--指定校验age属性 -->
+	<field-validator type="int">					<!-- 使用整数校验器 -->
+			<param name="min">0</param>				<!-- 年龄最小值 -->
+			<param name="max">100</param>			<!-- 年龄最大值 -->
+			<message>年龄必须在${min}至${max}之间</message>
+		</field-validator>
+	</field>
+
+	<field name="birthDay">								<!--指定校验birthDay属性 -->
+		<field-validator type="date">					<!-- 指定使用哪个校验器 -->
+			<param name="min">1900-01-01</param>		<!-- 配置birthDay属性最小值 -->
+			<param name="max">2010-01-01</param>		<!-- 配置birthDay属性最大值 -->
+				<message>出生日期必须在${min}至${max}之间</message>
+		</field-validator>
+	</field>
+
+</validators>
+

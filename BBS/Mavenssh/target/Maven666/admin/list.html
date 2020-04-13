@@ -1,0 +1,48 @@
+<html>
+<head>
+<link rel="stylesheet" href="inc/css.css" type="text/css" />
+</head>
+<body>
+<form name="form1" method="post" action="">
+  <table width="1052" border=0 align=center cellpadding=2 cellspacing=1 bordercolor="#799AE1" class=tableBorder>
+    <tbody>
+      <tr>
+        <th align=center colspan=16 style="height:23px">欢迎进入论坛后台管理</th>
+      </tr>
+      <tr bgcolor="#DEE5FA">
+        <td colspan="16" align="center" class=txlrow>&nbsp;</td>
+      </tr>
+      <tr bgcolor="#DEE5FA">
+        <td colspan="16" align=center bgcolor="#DEE5FA" class=txlrow>使用规则说明</td>
+      </tr>
+      <tr bgcolor="#DEE5FA">
+        <td colspan=16 align=center class=txlrow></td>
+      </tr>
+      <?
+}else{ echo "<tr><td height=20 colspan=8 align=middle valign=top bgcolor=#ffffff>暂无记录</td></tr>";}
+
+?></tbody></table>
+</FORM>
+<script  language="javascript">  
+       function  selectAll()  
+       {  
+       var  arrObj  =  document.all;  
+       for(var  i  =  0;  i  <  arrObj.length;i++)  
+       {  
+ 
+                               if(typeof  arrObj[i].type  !=  "undefined"  &&  arrObj[i].type=='checkbox')  arrObj[i].checked  =true;  
+       }  
+       }  
+ 
+       function  unSelectAll()  
+       {  
+           var  arrObj  =  document.all;  
+       for(var  i  =  0;  i  <  arrObj.length;i++)  
+       {  
+                               if(typeof  arrObj[i].type  !=  "undefined"  &&  arrObj[i].type=='checkbox')  arrObj[i].checked  =false;  
+       }  
+       }  
+</script> 
+
+</BODY>
+  </HTML>

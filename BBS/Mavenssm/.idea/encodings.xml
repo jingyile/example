@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/withstars/controller/ReplyController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/withstars/util/CheckServlet.java" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/withstars/util/Count.java" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/css" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/file.jsp" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/static/css/style_1_common.css" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/static/img/newtopic.gif" charset="GB2312" />
+  </component>
+</project>

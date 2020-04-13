@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- 定义数据源 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value><!-- 设置驱动类 -->
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/jingyile?characterEncoding=gb2312</value><!-- 设置连接URL -->
+		</property>
+		<property name="username">
+			<value>root</value>						<!-- 数据库用户名-->
+		</property>
+		<property name="password">
+			<value>Answer1025.</value>					<!-- 数据库密码 -->
+		</property>
+	</bean>
+	
+	<!-- 定义SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">			<!--数据源-->
+			<ref bean="dataSource"/>
+		</property>
+		<property name="hibernateProperties">	<!--Hibernate配置属性-->
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+		<property name="mappingResources">		<!--关系映射文件-->
+			<list>
+				<value>com/po/User.hbm.xml</value>
+				<value>com/po/Item.hbm.xml</value>
+				<value>com/po/SubItem.hbm.xml</value>
+				<value>com/po/Topic.hbm.xml</value>
+				<value>com/po/Replay.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 定义HibernateTemplate -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>		<!--注入SessionFactory实例对象-->
+		</property>
+	</bean>
+	
+	<bean id="hibernateTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>	<!--注入SessionFactory实例对象-->
+		</property>
+	</bean>
+	
+	<bean id="userDAOTarger" class="com.dao.UserDAOImpl"><!--装配数据访问层-->
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate"/>	<!--注入HibernateTemplate -->
+		</property>
+	</bean>
+	
+	<bean id="userDAO"
+		 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManager"/><!-- 为事务代理bean注入事务管理器-->
+		</property>
+		<property name="transactionAttributes"><!-- 设置事务属性 -->
+			<props>
+			<!-- 所有的方法，采用required的事务策略 -->
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+		<property name="target"><!--为事务代理bean设置目标bean -->
+			<ref bean="userDAOTarger"/>
+		</property>
+	</bean>
+	
+	<bean id="userService" class="com.service.UserServiceImpl">
+		<property name="userDAO" ref="userDAO"></property><!--注入DAO层-->
+	</bean>
+	
+	<bean id="userAddAction" class="com.action.UserAddAction" scope="prototype">
+		<property name="userService" ref="userService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="findAllUserAction" class="com.action.FindAllUserAction" scope="prototype">
+		<property name="userService" ref="userService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="userDeleteAction" class="com.action.UserDeleteAction" scope="prototype">
+		<property name="userService" ref="userService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	
+	<bean id="itemDAOTarger" class="com.dao.ItemDAOImpl"><!--装配数据访问层-->
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate"/>	<!--注入HibernateTemplate -->
+		</property>
+	</bean>
+	
+	<bean id="itemDAO"
+		 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManager"/><!-- 为事务代理bean注入事务管理器-->
+		</property>
+		<property name="transactionAttributes"><!-- 设置事务属性 -->
+			<props>
+			<!-- 所有的方法，采用required的事务策略 -->
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+		<property name="target"><!--为事务代理bean设置目标bean -->
+			<ref bean="itemDAOTarger"/>
+		</property>
+	</bean>
+	
+	<bean id="itemService" class="com.service.ItemServiceImpl">
+		<property name="itemDAO" ref="itemDAO"></property><!--注入itemDAO-->
+		<property name="userDAO" ref="userDAO"></property><!--注入userDAO-->
+		<property name="subItemDAO" ref="subItemDAO"></property><!--注入subItemDAO-->
+	</bean>
+	
+	<bean id="itemAddAction" class="com.action.ItemAddAction" scope="prototype">
+		<property name="itemService" ref="itemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="findAllItemAction" class="com.action.FindAllItemAction" scope="prototype">
+		<property name="itemService" ref="itemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="itemDeleteAction" class="com.action.ItemDeleteAction" scope="prototype">
+		<property name="itemService" ref="itemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="subItemAddBeforeAction" class="com.action.SubItemAddBefore" scope="prototype">
+		<property name="itemService" ref="itemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="subItemDAOTarger" class="com.dao.SubItemDAOImpl"><!--装配数据访问层-->
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate"/>	<!--注入HibernateTemplate -->
+		</property>
+	</bean>
+	
+	<bean id="subItemDAO"
+		 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManager"/><!-- 为事务代理bean注入事务管理器-->
+		</property>
+		<property name="transactionAttributes"><!-- 设置事务属性 -->
+			<props>
+			<!-- 所有的方法，采用required的事务策略 -->
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+		<property name="target"><!--为事务代理bean设置目标bean -->
+			<ref bean="subItemDAOTarger"/>
+		</property>
+	</bean>
+	
+	<bean id="subItemService" class="com.service.SubItemServiceImpl">
+		<property name="subItemDAO" ref="subItemDAO"></property><!--注入subItemDAO-->
+		<property name="userDAO" ref="userDAO"></property><!--注入userDAO-->
+	</bean>
+	
+	<bean id="subItemAddAction" class="com.action.SubItemAddAction" scope="prototype">
+		<property name="subItemService" ref="subItemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="findAllSubItemAction" class="com.action.FindAllSubItemAction" scope="prototype">
+		<property name="subItemService" ref="subItemService"></property><!--注入业务逻辑层-->
+		<property name="itemService" ref="itemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="subItemDeleteAction" class="com.action.SubItemDeleteAction" scope="prototype">
+		<property name="subItemService" ref="subItemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	<bean id="registerAction" class="com.action.RegisterAction" scope="prototype">
+		<property name="userService" ref="userService"></property><!--注入业务逻辑层-->
+	</bean>
+	<bean id="loginAction" class="com.action.LoginAction" scope="prototype">
+		<property name="userService" ref="userService"></property><!--注入业务逻辑层-->
+	</bean>
+
+	<bean id="KillAction" class="com.action.KillAction" scope="prototype">
+		<property name="userService" ref="userService"></property><!--注入业务逻辑层-->
+	</bean>
+
+	<bean id="goIndexAction" class="com.action.GoIndexAction" scope="prototype">
+		<property name="subItemService" ref="subItemService"></property><!--注入业务逻辑层-->
+		<property name="itemService" ref="itemService"></property><!--注入业务逻辑层-->
+	</bean>
+	
+	
+	<bean id="topicDAOTarger" class="com.dao.TopicDAOImpl"><!--装配数据访问层-->
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate"/>	<!--注入HibernateTemplate -->
+		</property>
+	</bean>
+	
+	<bean id="topicDAO"
+		 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManager"/><!-- 为事务代理bean注入事务管理器-->
+		</property>
+		<property name="transactionAttributes"><!-- 设置事务属性 -->
+			<props>
+			<!-- 所有的方法，采用required的事务策略 -->
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+		<property name="target"><!--为事务代理bean设置目标bean -->
+			<ref bean="topicDAOTarger"/>
+		</property>
+	</bean>
+	
+	<bean id="topicService" class="com.service.TopicServiceImpl">
+		<property name="topicDAO" ref="topicDAO"></property><!--注入topicDAO-->
+		<property name="userDAO" ref="userDAO"></property><!--注入DAO层-->
+	</bean>
+	
+	<bean id="findAllTopicAction" class="com.action.FindAllTopicAction">
+		<property name="topicService" ref="topicService"></property><!--注入topicService-->
+		<property name="subItemService" ref="subItemService"></property><!--注入subItemService-->
+	</bean>
+	
+	<bean id="topicAddAction" class="com.action.TopicAddAction">
+		<property name="topicService" ref="topicService"></property><!--注入topicService-->
+	</bean>
+	
+	<bean id="findTopicAction" class="com.action.FindTopicAction">
+		<property name="topicService" ref="topicService"></property><!--注入topicService-->
+		<property name="subItemService" ref="subItemService"></property><!--注入subItemService-->
+		<property name="replayService" ref="replayService"></property><!--注入replayService-->
+	</bean>
+	
+	<bean id="replayDAOTarger" class="com.dao.ReplayDAOImpl"><!--装配数据访问层-->
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate"/>	<!--注入HibernateTemplate -->
+		</property>
+	</bean>
+	
+	<bean id="replayDAO"
+		 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManager"/><!-- 为事务代理bean注入事务管理器-->
+		</property>
+		<property name="transactionAttributes"><!-- 设置事务属性 -->
+			<props>
+			<!-- 所有的方法，采用required的事务策略 -->
+			<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+		<property name="target"><!--为事务代理bean设置目标bean -->
+			<ref bean="replayDAOTarger"/>
+		</property>
+	</bean>
+	
+	<bean id="replayService" class="com.service.ReplayServiceImpl">
+		<property name="replayDAO" ref="replayDAO"></property><!--注入replayDAO-->
+		<property name="userDAO" ref="userDAO"></property><!--注入userDAO-->
+	</bean>
+	
+	<bean id="replayAddAction" class="com.action.ReplayAddAction">
+		<property name="replayService" ref="replayService"></property><!--注入replayService-->
+	</bean>
+</beans>

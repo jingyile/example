@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.po.Replay" table="replay">
+		<id name="Id">
+			<generator class="identity"></generator>
+		</id>
+		<property name="topicID"></property>
+		<property name="content"></property>
+		<many-to-one name="user"
+                     class="com.po.User" cascade="save-update" outer-join="true" lazy="false" not-found="ignore"/>
+		<property name="date"></property>
+	</class>
+</hibernate-mapping>
+

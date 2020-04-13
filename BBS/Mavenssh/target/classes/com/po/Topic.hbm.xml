@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.po.Topic" table="topic">
+		<id name="topicID">
+			<generator class="identity"></generator>
+		</id>
+		<property name="title"></property>
+		<property name="content"></property>
+		<many-to-one name="user"
+                     class="com.po.User" cascade="save-update" outer-join="true" lazy="false" not-found="ignore"/>
+		<property name="date"></property>
+		<property name="hasread"></property>
+		<property name="subItemID"></property>
+		<set name="replays" cascade="all" lazy="false">
+			<key column="topicID"></key>				<!-- 配置外键 -->
+			<one-to-many class="com.po.Replay"/><!-- 配置关联类 -->
+		</set>
+	</class>	
+</hibernate-mapping>
+
